@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - Healthcare Chatbot</title>
+    <link rel="stylesheet" href="/static/css/chat.css">
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>Chat History</h2>
+                <button class="btn-new-chat" id="newChatBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 5v14M5 12h14" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    New Chat
+                </button>
+            </div>
+            
+            <!-- PDF Upload Section -->
+            <div class="pdf-section">
+                <h3>📚 My Documents</h3>
+                <label for="pdfUpload" class="btn-upload">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Upload PDF
+                </label>
+                <input type="file" id="pdfUpload" accept=".pdf" style="display: none;">
+                
+                <div id="documentsList" class="documents-list">
+                    <!-- Documents will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="sessions-list" id="sessionsList">
+                <!-- Sessions will be loaded here -->
+            </div>
+        </aside>
+        
+        <!-- Main Chat Area -->
+        <main class="chat-main">
+            <!-- Header -->
+            <header class="chat-header">
+                <button class="toggle-sidebar" id="toggleSidebar">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M3 12h18M3 6h18M3 18h18" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                
+                <h1>Healthcare Assistant with RAG</h1>
+                
+                <button class="btn-logout" id="logoutBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Logout
+                </button>
+            </header>
+            
+            <!-- Messages -->
+            <div class="messages-container" id="messagesContainer">
+                <div class="welcome-message" id="welcomeMessage">
+                    <h2>👋 Welcome to Healthcare Chatbot</h2>
+                    <p>Ask me anything about health and wellness. I'm here to help!</p>
+                    <p class="info-box">📚 Upload PDF documents to get answers based on your medical files!</p>
+                    <p class="disclaimer">⚠️ I only answer healthcare-related questions. Always consult professionals for serious concerns.</p>
+                </div>
+            </div>
+            
+            <!-- Input Area -->
+            <div class="input-container">
+                <form id="chatForm" class="chat-form">
+                    <textarea 
+                        id="messageInput" 
+                        placeholder="Ask about health, symptoms, treatments..."
+                        rows="1"
+                    ></textarea>
+                    <button type="submit" id="sendBtn" class="btn-send">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+    
+    <script src="/static/js/chat.js"></script>
+</body>
+</html>

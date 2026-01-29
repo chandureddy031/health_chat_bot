@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  healthcare-chatbot:
+    build: .
+    container_name: healthcare_chatbot_app
+    ports:
+      - "8000:8000"
+    environment:
+      # MongoDB Configuration
+      - MONGO_URI=${MONGO_URI}
+      - MONGO_DB_NAME=${MONGO_DB_NAME}
+      
+      # JWT Configuration
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - JWT_ALGORITHM=${JWT_ALGORITHM}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES}
+      
+      # API Keys
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - SERPER_API_KEY=${SERPER_API_KEY}
+      - NEWS_API_KEY=${NEWS_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      
+      # Suppress warnings
+      - TF_CPP_MIN_LOG_LEVEL=3
+      - TF_ENABLE_ONEDNN_OPTS=0
+    
+    volumes:
+      # Persist uploaded PDFs and vector store
+      - ./backend/documents:/app/backend/documents
+      - ./backend/vector_store:/app/backend/vector_store
+      
+      # Optional: Mount code for development (remove in production)
+      # - ./backend:/app/backend
+      # - ./frontend:/app/frontend
+    
+    restart: unless-stopped
+    
+    networks:
+      - chatbot-network
+
+networks:
+  chatbot-network:
+    driver: bridge
