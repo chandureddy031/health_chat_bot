@@ -96,21 +96,3 @@ http://localhost:8000
 
 ## Project Structure
 
-```
-healthcare_chatbot/
-├── backend/
-│   ├── main.py          # FastAPI application
-│   ├── auth.py          # Authentication routes
-│   ├── chat.py          # Chat routes
-│   ├── models.py        # Pydantic models
-│   ├── db.py            # Database connection
-│   ├── logger.py        # Logging utility
-│   └── utils/
-│       ├── security.py  # JWT & password utilities
-│       └── llm.py       # Groq LLM integration
-├── frontend/
-│   ├── static/
-│   │   ├── css/        # Stylesheets
-│   │   └── js/         # JavaScript files
-│   └── templates/      # HTML templates
-├── .env                # Environment
