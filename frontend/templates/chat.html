@@ -55,7 +55,7 @@
                 
                 <!-- User Profile Dropdown -->
                 <div class="user-menu">
-                    <button class="user-avatar" id="userAvatar">
+                    <button class="user-avatar" id="userAvatarBtn">
                         <div class="avatar-circle">
                             <span id="userInitials">U</span>
                         </div>
@@ -73,6 +73,14 @@
                             </div>
                         </div>
                         <div class="dropdown-divider"></div>
+                        
+                        <button class="dropdown-item" id="profileBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Health Profile
+                        </button>
+                        
                         <button class="dropdown-item" id="logoutBtn">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -110,6 +118,9 @@
             </div>
         </main>
     </div>
+    
+    <!-- Overlay for dropdown -->
+    <div class="dropdown-overlay" id="dropdownOverlay"></div>
     
     <script src="/static/js/chat.js"></script>
 </body>

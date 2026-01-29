@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Profile - Healthcare Chatbot</title>
+    <link rel="stylesheet" href="/static/css/profile.css">
+</head>
+<body>
+    <div class="profile-container">
+        <aside class="profile-sidebar">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <span id="userInitials">U</span>
+                </div>
+                <h2 id="userName">User</h2>
+                <p id="userEmail">user@example.com</p>
+            </div>
+            
+            <nav class="profile-nav">
+                <a href="#" class="nav-item active" data-section="basic-info">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Basic Information
+                </a>
+                
+                <a href="#" class="nav-item" data-section="medical-history">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Medical History
+                </a>
+                
+                <a href="#" class="nav-item" data-section="medications">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09zM12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Current Medications
+                </a>
+                
+                <a href="#" class="nav-item" data-section="allergies">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Allergies
+                </a>
+                
+                <a href="#" class="nav-item" data-section="lifestyle">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Lifestyle & Habits
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="btn-back" onclick="window.location.href='/chat'">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M19 12H5M12 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Back to Chat
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content Area -->
+        <main class="profile-main">
+            <div class="profile-content">
+                <!-- Basic Information Section -->
+                <section class="profile-section active" id="basic-info">
+                    <h1>Basic Information</h1>
+                    <p class="section-description">Tell us about yourself to get personalized health advice</p>
+                    
+                    <form class="profile-form" id="basicInfoForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName">Full Name *</label>
+                                <input type="text" id="fullName" name="fullName" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="dateOfBirth">Date of Birth *</label>
+                                <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="gender">Gender *</label>
+                                <select id="gender" name="gender" required>
+                                    <option value="">Select gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                    <option value="prefer-not-to-say">Prefer not to say</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="bloodType">Blood Type</label>
+                                <select id="bloodType" name="bloodType">
+                                    <option value="">Select blood type</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="height">Height (cm)</label>
+                                <input type="number" id="height" name="height" placeholder="170">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="weight">Weight (kg)</label>
+                                <input type="number" id="weight" name="weight" placeholder="70">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+1 234 567 8900">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">Save Information</button>
+                        </div>
+                    </form>
+                </section>
+                
+                <!-- Medical History Section -->
+                <section class="profile-section" id="medical-history">
+                    <h1>Medical History</h1>
+                    <p class="section-description">Your past and current health conditions</p>
+                    
+                    <form class="profile-form" id="medicalHistoryForm">
+                        <div class="form-group">
+                            <label for="chronicConditions">Chronic Conditions</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="chronicConditions" value="diabetes">
+                                    <span>Diabetes</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="chronicConditions" value="hypertension">
+                                    <span>Hypertension</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="chronicConditions" value="asthma">
+                                    <span>Asthma</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="chronicConditions" value="heart-disease">
+                                    <span>Heart Disease</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="chronicConditions" value="thyroid">
+                                    <span>Thyroid Disorder</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="chronicConditions" value="arthritis">
+                                    <span>Arthritis</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pastSurgeries">Past Surgeries</label>
+                            <textarea id="pastSurgeries" name="pastSurgeries" rows="3" placeholder="List any surgeries you've had (e.g., Appendectomy - 2015)"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="familyHistory">Family Medical History</label>
+                            <textarea id="familyHistory" name="familyHistory" rows="3" placeholder="Any hereditary conditions in your family?"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="otherConditions">Other Medical Conditions</label>
+                            <textarea id="otherConditions" name="otherConditions" rows="3" placeholder="Any other health conditions we should know about?"></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">Save Medical History</button>
+                        </div>
+                    </form>
+                </section>
+                
+                <!-- Medications Section -->
+                <section class="profile-section" id="medications">
+                    <h1>Current Medications</h1>
+                    <p class="section-description">Medications you're currently taking</p>
+                    
+                    <div class="medications-list" id="medicationsList">
+                        <!-- Medications will be added here -->
+                    </div>
+                    
+                    <button class="btn-add" id="addMedicationBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 5v14M5 12h14" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        Add Medication
+                    </button>
+                    
+                    <form class="profile-form" id="medicationsForm" style="display: none;">
+                        <div class="form-group">
+                            <label for="medicationName">Medication Name *</label>
+                            <input type="text" id="medicationName" name="medicationName" placeholder="e.g., Aspirin">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dosage">Dosage *</label>
+                                <input type="text" id="dosage" name="dosage" placeholder="e.g., 100mg">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="frequency">Frequency *</label>
+                                <input type="text" id="frequency" name="frequency" placeholder="e.g., Once daily">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="prescribedFor">Prescribed For</label>
+                            <input type="text" id="prescribedFor" name="prescribedFor" placeholder="e.g., High blood pressure">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" id="cancelMedicationBtn">Cancel</button>
+                            <button type="submit" class="btn-primary">Add Medication</button>
+                        </div>
+                    </form>
+                </section>
+                
+                <!-- Allergies Section -->
+                <section class="profile-section" id="allergies">
+                    <h1>Allergies</h1>
+                    <p class="section-description">Drug and food allergies</p>
+                    
+                    <form class="profile-form" id="allergiesForm">
+                        <div class="form-group">
+                            <label for="drugAllergies">Drug Allergies</label>
+                            <textarea id="drugAllergies" name="drugAllergies" rows="3" placeholder="List any medications you're allergic to (e.g., Penicillin, Aspirin)"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="foodAllergies">Food Allergies</label>
+                            <textarea id="foodAllergies" name="foodAllergies" rows="3" placeholder="List any food allergies (e.g., Peanuts, Shellfish, Dairy)"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="otherAllergies">Other Allergies</label>
+                            <textarea id="otherAllergies" name="otherAllergies" rows="3" placeholder="Any other allergies? (e.g., Pollen, Dust, Latex)"></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">Save Allergies</button>
+                        </div>
+                    </form>
+                </section>
+                
+                <!-- Lifestyle Section -->
+                <section class="profile-section" id="lifestyle">
+                    <h1>Lifestyle & Habits</h1>
+                    <p class="section-description">Your daily habits and lifestyle choices</p>
+                    
+                    <form class="profile-form" id="lifestyleForm">
+                        <div class="form-group">
+                            <label>Exercise Frequency</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="exerciseFrequency" value="none">
+                                    <span>None</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="exerciseFrequency" value="1-2-times">
+                                    <span>1-2 times/week</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="exerciseFrequency" value="3-4-times">
+                                    <span>3-4 times/week</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="exerciseFrequency" value="daily">
+                                    <span>Daily</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Smoking Status</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="smokingStatus" value="never">
+                                    <span>Never</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="smokingStatus" value="former">
+                                    <span>Former smoker</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="smokingStatus" value="current">
+                                    <span>Current smoker</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Alcohol Consumption</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="alcoholConsumption" value="none">
+                                    <span>None</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="alcoholConsumption" value="occasional">
+                                    <span>Occasional</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="alcoholConsumption" value="moderate">
+                                    <span>Moderate</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="alcoholConsumption" value="heavy">
+                                    <span>Heavy</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="sleepHours">Average Sleep Hours per Night</label>
+                            <input type="number" id="sleepHours" name="sleepHours" min="0" max="24" placeholder="7-8">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="dietType">Diet Type</label>
+                            <select id="dietType" name="dietType">
+                                <option value="">Select diet type</option>
+                                <option value="omnivore">Omnivore</option>
+                                <option value="vegetarian">Vegetarian</option>
+                                <option value="vegan">Vegan</option>
+                                <option value="pescatarian">Pescatarian</option>
+                                <option value="keto">Keto</option>
+                                <option value="paleo">Paleo</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="stressLevel">Stress Level (1-10)</label>
+                            <input type="range" id="stressLevel" name="stressLevel" min="1" max="10" value="5">
+                            <div class="range-value">
+                                <span>Low (1)</span>
+                                <span id="stressLevelValue">5</span>
+                                <span>High (10)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">Save Lifestyle Information</button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </main>
+    </div>
+    
+    <script src="/static/js/profile.js"></script>
+</body>
+</html>

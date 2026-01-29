@@ -707,3 +707,58 @@ body {
 }
 
 /* Keep all your existing styles below this */
+/* Dropdown Overlay */
+.dropdown-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 999;
+    display: none;
+}
+
+.dropdown-overlay.show {
+    display: block;
+}
+
+/* Make sure dropdown is above overlay */
+.dropdown-menu {
+    z-index: 1000;
+}
+
+/* Ensure dropdown item buttons look like links */
+.dropdown-item {
+    width: 100%;
+    padding: 12px 20px;
+    background: transparent;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.2s ease;
+    font-family: inherit;
+}
+
+.dropdown-item:hover {
+    background: #f9fafb;
+}
+
+.dropdown-item svg {
+    color: #6b7280;
+    flex-shrink: 0;
+}
+
+.dropdown-item:hover svg {
+    color: #667eea;
+}
+
+#logoutBtn:hover svg {
+    color: #ef4444;
+}

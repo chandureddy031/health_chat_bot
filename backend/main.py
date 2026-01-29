@@ -1,5 +1,6 @@
 import warnings
 warnings.filterwarnings("ignore")
+
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
@@ -14,6 +15,7 @@ from dotenv import load_dotenv
 from backend.auth import router as auth_router
 from backend.chat import router as chat_router
 from backend.pdf_routes import router as pdf_router
+from backend.profile_routes import router as profile_router  # ADD THIS
 from backend.logger import get_logger
 
 # Load environment variables
@@ -30,7 +32,7 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# CORS middleware - allow all origins for Docker
+# CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -49,6 +51,7 @@ templates = Jinja2Templates(directory="frontend/templates")
 app.include_router(auth_router)
 app.include_router(chat_router)
 app.include_router(pdf_router)
+app.include_router(profile_router)  # ADD THIS
 
 # Frontend routes
 @app.get("/")
@@ -70,6 +73,12 @@ async def signup_page(request: Request):
 async def chat_page(request: Request):
     """Render chat page"""
     return templates.TemplateResponse("chat.html", {"request": request})
+
+# ADD THIS PROFILE ROUTE
+@app.get("/profile")
+async def profile_page(request: Request):
+    """Render profile page"""
+    return templates.TemplateResponse("profile.html", {"request": request})
 
 @app.get("/health")
 async def health_check():

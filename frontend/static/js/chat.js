@@ -81,23 +81,24 @@ function toggleDropdown() {
     const dropdown = document.getElementById('dropdownMenu');
     const overlay = document.getElementById('dropdownOverlay');
     
-    if (!overlay) {
-        // Create overlay if it doesn't exist
-        const newOverlay = document.createElement('div');
-        newOverlay.id = 'dropdownOverlay';
-        newOverlay.className = 'dropdown-overlay';
-        document.body.appendChild(newOverlay);
-        
-        newOverlay.addEventListener('click', closeDropdown);
+    console.log('Toggle dropdown called');
+    console.log('Dropdown element:', dropdown);
+    console.log('Overlay element:', overlay);
+    
+    if (!dropdown || !overlay) {
+        console.error('Dropdown or overlay not found!');
+        return;
     }
     
     const isOpen = dropdown.classList.contains('show');
+    console.log('Is dropdown open?', isOpen);
     
     if (isOpen) {
         closeDropdown();
     } else {
         dropdown.classList.add('show');
-        document.getElementById('dropdownOverlay').classList.add('show');
+        overlay.classList.add('show');
+        console.log('Dropdown opened');
     }
 }
 
@@ -105,10 +106,14 @@ function closeDropdown() {
     const dropdown = document.getElementById('dropdownMenu');
     const overlay = document.getElementById('dropdownOverlay');
     
-    dropdown.classList.remove('show');
+    if (dropdown) {
+        dropdown.classList.remove('show');
+    }
     if (overlay) {
         overlay.classList.remove('show');
     }
+    
+    console.log('Dropdown closed');
 }
 
 // PDF Functions
@@ -532,11 +537,37 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSessions();
     loadDocuments();
     
-    // User avatar click handler
-    document.getElementById('userAvatar').addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleDropdown();
-    });
+    // User avatar click handler - FIXED
+    const userAvatarBtn = document.getElementById('userAvatarBtn');
+    if (userAvatarBtn) {
+        userAvatarBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            console.log('Avatar clicked');
+            toggleDropdown();
+        });
+    }
+    
+    // Profile button click handler - NEW
+    const profileBtn = document.getElementById('profileBtn');
+    if (profileBtn) {
+        profileBtn.addEventListener('click', () => {
+            console.log('Profile button clicked');
+            closeDropdown();
+            window.location.href = '/profile';
+        });
+    }
+    
+    // Logout button
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', logout);
+    }
+    
+    // Close dropdown when clicking overlay
+    const overlay = document.getElementById('dropdownOverlay');
+    if (overlay) {
+        overlay.addEventListener('click', closeDropdown);
+    }
     
     // PDF upload handler
     document.getElementById('pdfUpload').addEventListener('change', (e) => {
@@ -574,16 +605,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     document.getElementById('newChatBtn').addEventListener('click', newChat);
-    document.getElementById('logoutBtn').addEventListener('click', logout);
     document.getElementById('toggleSidebar').addEventListener('click', toggleSidebar);
     
     // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
         const dropdown = document.getElementById('dropdownMenu');
-        const avatar = document.getElementById('userAvatar');
+        const avatar = document.getElementById('userAvatarBtn');
         
-        if (!dropdown.contains(e.target) && !avatar.contains(e.target)) {
-            closeDropdown();
+        if (dropdown && avatar) {
+            if (!dropdown.contains(e.target) && !avatar.contains(e.target)) {
+                closeDropdown();
+            }
         }
     });
     
