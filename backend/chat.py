@@ -27,45 +27,43 @@ async def send_message(
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         
-        user_id = str(user["_id"])
+        # CRITICAL FIX: Keep as ObjectId for profile lookup, convert to string for session
+        user_object_id = user["_id"]
+        user_id_str = str(user_object_id)
         
         # Create or get session
-        session = None
         if chat_request.session_id:
             session = sessions_collection.find_one({
                 "_id": ObjectId(chat_request.session_id),
-                "user_id": user_id
+                "user_id": user_id_str
             })
             if not session:
                 raise HTTPException(status_code=404, detail="Session not found")
             session_id = chat_request.session_id
-            logger.info(f"Continuing existing session: {session_id} with {len(session.get('messages', []))} previous messages")
         else:
-            # Create new session
             session_id = str(ObjectId())
             session = {
                 "_id": ObjectId(session_id),
-                "user_id": user_id,
+                "user_id": user_id_str,
                 "title": chat_request.message[:50],
                 "created_at": datetime.utcnow(),
                 "updated_at": datetime.utcnow(),
                 "messages": []
             }
             sessions_collection.insert_one(session)
-            logger.info(f"Created new session: {session_id}")
         
-        # Get conversation history - IMPORTANT for context continuity
+        # Get conversation history
         conversation_history = session.get("messages", [])
-        logger.info(f"Conversation history has {len(conversation_history)} messages")
         
-        # Use RAG system with conversation history
+        # CRITICAL: Pass user_id_str for profile lookup
         assistant_response = rag_system.generate_response(
             query=chat_request.message,
-            user_id=user_id,
-            conversation_history=conversation_history  # Pass full history
+            user_id=user_id_str,
+            session_id=session_id,
+            conversation_history=conversation_history
         )
         
-        # Save messages to session
+        # Save messages
         user_message = {
             "role": "user",
             "content": chat_request.message,
@@ -82,15 +80,11 @@ async def send_message(
             {"_id": ObjectId(session_id)},
             {
                 "$push": {
-                    "messages": {
-                        "$each": [user_message, assistant_message]
-                    }
+                    "messages": {"$each": [user_message, assistant_message]}
                 },
                 "$set": {"updated_at": datetime.utcnow()}
             }
         )
-        
-        logger.info(f"Message processed for session: {session_id}")
         
         return ChatResponse(
             response=assistant_response,
@@ -106,6 +100,7 @@ async def send_message(
             detail=str(e)
         )
 
+# Keep the rest of the routes the same...
 @router.get("/sessions", response_model=List[dict])
 async def get_sessions(user_email: str = Depends(verify_token)):
     """Get all chat sessions for the user"""
@@ -118,8 +113,9 @@ async def get_sessions(user_email: str = Depends(verify_token)):
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         
+        user_id = str(user["_id"])
         sessions = list(sessions_collection.find(
-            {"user_id": str(user["_id"])},
+            {"user_id": user_id},
             {"messages": 0}
         ).sort("updated_at", -1))
         
@@ -152,18 +148,16 @@ async def get_session(
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         
+        user_id = str(user["_id"])
         session = sessions_collection.find_one({
             "_id": ObjectId(session_id),
-            "user_id": str(user["_id"])
+            "user_id": user_id
         })
         
         if not session:
             raise HTTPException(status_code=404, detail="Session not found")
         
         session["id"] = str(session.pop("_id"))
-        
-        logger.info(f"Loaded session {session_id} with {len(session.get('messages', []))} messages")
-        
         return session
         
     except HTTPException:
@@ -190,15 +184,14 @@ async def delete_session(
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         
+        user_id = str(user["_id"])
         result = sessions_collection.delete_one({
             "_id": ObjectId(session_id),
-            "user_id": str(user["_id"])
+            "user_id": user_id
         })
         
         if result.deleted_count == 0:
             raise HTTPException(status_code=404, detail="Session not found")
-        
-        logger.info(f"Session deleted: {session_id}")
         
         return {"message": "Session deleted successfully"}
         

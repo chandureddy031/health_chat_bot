@@ -94,5 +94,4 @@ http://localhost:8000
 - Input validation
 - CORS protection
 
-## Project Structure
 
