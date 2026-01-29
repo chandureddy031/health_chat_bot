@@ -5,6 +5,7 @@ const API_BASE = window.location.origin;
 let currentSessionId = null;
 let sessions = [];
 let documents = [];
+let currentUser = null;
 
 // Check authentication
 function checkAuth() {
@@ -24,6 +25,90 @@ function getHeaders() {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
     };
+}
+
+// Get user initials from name or email
+function getInitials(name, email) {
+    if (name && name.trim()) {
+        const parts = name.trim().split(' ');
+        if (parts.length >= 2) {
+            return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+        }
+        return name.substring(0, 2).toUpperCase();
+    }
+    if (email) {
+        return email.substring(0, 2).toUpperCase();
+    }
+    return 'U';
+}
+
+// Load user profile
+async function loadUserProfile() {
+    try {
+        const userEmail = localStorage.getItem('userEmail');
+        const userName = localStorage.getItem('userName');
+        
+        if (!userEmail) {
+            console.warn('No user email found in localStorage');
+            return;
+        }
+        
+        currentUser = {
+            email: userEmail,
+            username: userName || userEmail.split('@')[0]
+        };
+        
+        // Update UI with user info
+        const initials = getInitials(currentUser.username, currentUser.email);
+        
+        // Update avatar initials
+        document.getElementById('userInitials').textContent = initials;
+        document.getElementById('dropdownInitials').textContent = initials;
+        
+        // Update dropdown user info
+        document.getElementById('dropdownUsername').textContent = currentUser.username;
+        document.getElementById('dropdownEmail').textContent = currentUser.email;
+        
+        console.log('User profile loaded:', currentUser);
+        
+    } catch (error) {
+        console.error('Load user profile error:', error);
+    }
+}
+
+// Toggle dropdown menu
+function toggleDropdown() {
+    const dropdown = document.getElementById('dropdownMenu');
+    const overlay = document.getElementById('dropdownOverlay');
+    
+    if (!overlay) {
+        // Create overlay if it doesn't exist
+        const newOverlay = document.createElement('div');
+        newOverlay.id = 'dropdownOverlay';
+        newOverlay.className = 'dropdown-overlay';
+        document.body.appendChild(newOverlay);
+        
+        newOverlay.addEventListener('click', closeDropdown);
+    }
+    
+    const isOpen = dropdown.classList.contains('show');
+    
+    if (isOpen) {
+        closeDropdown();
+    } else {
+        dropdown.classList.add('show');
+        document.getElementById('dropdownOverlay').classList.add('show');
+    }
+}
+
+function closeDropdown() {
+    const dropdown = document.getElementById('dropdownMenu');
+    const overlay = document.getElementById('dropdownOverlay');
+    
+    dropdown.classList.remove('show');
+    if (overlay) {
+        overlay.classList.remove('show');
+    }
 }
 
 // PDF Functions
@@ -79,7 +164,6 @@ async function uploadPDF(file) {
     formData.append('file', file);
     
     try {
-        // Show upload progress
         const documentsList = document.getElementById('documentsList');
         documentsList.insertAdjacentHTML('afterbegin', `
             <div class="upload-progress" id="uploadProgress">
@@ -98,7 +182,6 @@ async function uploadPDF(file) {
             body: formData
         });
         
-        // Remove progress indicator
         document.getElementById('uploadProgress')?.remove();
         
         if (response.ok) {
@@ -140,7 +223,7 @@ async function deleteDocument(documentId) {
     }
 }
 
-// Chat Functions (keep existing functions)
+// Chat Functions
 async function loadSessions() {
     try {
         console.log('Loading sessions...');
@@ -262,7 +345,6 @@ function createMessageHTML(message) {
     
     const avatar = message.role === 'user' ? '👤' : '🤖';
     
-    // Convert markdown-style bold to HTML
     let content = escapeHtml(message.content);
     content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     content = content.replace(/\*(.*?)\*/g, '<em>$1</em>');
@@ -420,8 +502,14 @@ function autoResize(textarea) {
 
 function logout() {
     console.log('Logging out');
+    closeDropdown();
+    
+    // Clear all user data
     localStorage.removeItem('token');
     localStorage.removeItem('userEmail');
+    localStorage.removeItem('userName');
+    
+    // Redirect to signin
     window.location.href = '/signin';
 }
 
@@ -437,16 +525,25 @@ document.addEventListener('DOMContentLoaded', () => {
     
     checkAuth();
     
+    // Load user profile first
+    loadUserProfile();
+    
     // Load sessions and documents
     loadSessions();
     loadDocuments();
+    
+    // User avatar click handler
+    document.getElementById('userAvatar').addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleDropdown();
+    });
     
     // PDF upload handler
     document.getElementById('pdfUpload').addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
             uploadPDF(file);
-            e.target.value = ''; // Reset input
+            e.target.value = '';
         }
     });
     
@@ -479,6 +576,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('newChatBtn').addEventListener('click', newChat);
     document.getElementById('logoutBtn').addEventListener('click', logout);
     document.getElementById('toggleSidebar').addEventListener('click', toggleSidebar);
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        const dropdown = document.getElementById('dropdownMenu');
+        const avatar = document.getElementById('userAvatar');
+        
+        if (!dropdown.contains(e.target) && !avatar.contains(e.target)) {
+            closeDropdown();
+        }
+    });
     
     console.log('All event listeners attached');
 });

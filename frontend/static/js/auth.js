@@ -94,9 +94,13 @@ function initSignIn() {
             const data = await response.json();
             
             if (response.ok) {
-                // Store token
+                // Store token and user info
                 localStorage.setItem('token', data.access_token);
                 localStorage.setItem('userEmail', email);
+                
+                // Extract username from email if not provided
+                const username = email.split('@')[0];
+                localStorage.setItem('userName', username);
                 
                 // Redirect to chat
                 window.location.href = '/chat';

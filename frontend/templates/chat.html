@@ -53,12 +53,34 @@
                 
                 <h1>Healthcare Assistant with RAG</h1>
                 
-                <button class="btn-logout" id="logoutBtn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    Logout
-                </button>
+                <!-- User Profile Dropdown -->
+                <div class="user-menu">
+                    <button class="user-avatar" id="userAvatar">
+                        <div class="avatar-circle">
+                            <span id="userInitials">U</span>
+                        </div>
+                    </button>
+                    
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <div class="dropdown-header">
+                            <div class="dropdown-avatar">
+                                <span id="dropdownInitials">U</span>
+                            </div>
+                            <div class="dropdown-user-info">
+                                <div class="dropdown-username" id="dropdownUsername">User</div>
+                                <div class="dropdown-email" id="dropdownEmail">user@example.com</div>
+                            </div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item" id="logoutBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Logout
+                        </button>
+                    </div>
+                </div>
             </header>
             
             <!-- Messages -->

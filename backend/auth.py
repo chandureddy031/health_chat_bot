@@ -56,13 +56,14 @@ async def signup(user: UserSignUp):
             detail="Registration failed"
         )
 
-@router.post("/signin", response_model=Token)
+@router.post("/signin")
 async def signin(user: UserSignIn):
-    """Authenticate user and return JWT token"""
+    """Authenticate user and return JWT token with user info"""
     try:
         db = Database.get_db()
         users_collection = db["users"]
-
+        
+        # Find user
         db_user = users_collection.find_one({"email": user.email})
         if not db_user:
             raise HTTPException(
@@ -70,18 +71,24 @@ async def signin(user: UserSignIn):
                 detail="Incorrect email or password"
             )
         
-
+        # Verify password
         if not verify_password(user.password, db_user["password_hash"]):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Incorrect email or password"
             )
         
-
+        # Create access token
         access_token = create_access_token(data={"sub": user.email})
         logger.info(f"User signed in: {user.email}")
         
-        return Token(access_token=access_token)
+        # Return token and user info
+        return {
+            "access_token": access_token,
+            "token_type": "bearer",
+            "username": db_user.get("username", user.email.split('@')[0]),
+            "email": user.email
+        }
         
     except HTTPException:
         raise
